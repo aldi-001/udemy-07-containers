@@ -1,4 +1,4 @@
-name: Deployment (Container)
+name: Deployment (Runner using Mongo Container )
 on:
   push:
     branches:
@@ -11,13 +11,13 @@ jobs:
   test:
     environment: testing
     runs-on: ubuntu-latest
-    container:
-      image: node:16
+    #container:
+    #  image: node:16
     env: #use docker container  and inject env vars to the image
       MONGODB_CONNECTION_PROTOCOL: mongodb
       #MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       #MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
-      MONGODB_CLUSTER_ADDRESS: mongo #label of container service
+      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017 #label of container service
       #MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
       MONGODB_USERNAME: root
       #MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
@@ -26,6 +26,8 @@ jobs:
     services:
        mongo:
         image: mongo  # runs as long as wf is running
+        ports:
+          - 27017:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: alex-root
